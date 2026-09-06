@@ -1,4 +1,4 @@
-"""Runtime loop for JARVIS."""
+"""Runtime loop for FRIDAY."""
 
 from __future__ import annotations
 
@@ -17,6 +17,7 @@ from open_jarvis.runtime import voice_personality as personality_runtime
 from open_jarvis.runtime import wake_listener as wake_state
 from open_jarvis.runtime import wake_word as voice_runtime
 from open_jarvis.utils.jarvis_logging import get_logger
+
 
 logger = get_logger("main")
 
@@ -41,7 +42,11 @@ def maybe_tell_joke():
 
 
 def say_goodbye():
-    personality_runtime.say_goodbye(speak=speak, send_log=send_log, logger=logger)
+    personality_runtime.say_goodbye(
+        speak=speak,
+        send_log=send_log,
+        logger=logger,
+    )
 
 
 def parse_duration(command):
@@ -49,23 +54,45 @@ def parse_duration(command):
 
 
 def start_timer(seconds, message="Time is up, sir."):
-    return timer_runtime.start_timer(seconds, message, speak=speak, send_log=send_log, logger=logger)
+    return timer_runtime.start_timer(
+        seconds,
+        message,
+        speak=speak,
+        send_log=send_log,
+        logger=logger,
+    )
 
 
 def handle_timer_command(command):
-    return timer_runtime.handle_timer_command(command, speak=speak, send_log=send_log, logger=logger)
+    return timer_runtime.handle_timer_command(
+        command,
+        speak=speak,
+        send_log=send_log,
+        logger=logger,
+    )
 
 
 def listen_for_wake_word():
-    return wake_state.listen_for_wake_word(logger=logger, send_log=send_log)
+    return wake_state.listen_for_wake_word(
+        logger=logger,
+        send_log=send_log,
+    )
 
 
 def listen_for_command():
-    return voice_runtime.listen_for_command(speak=speak, send_log=send_log, logger=logger)
+    return voice_runtime.listen_for_command(
+        speak=speak,
+        send_log=send_log,
+        logger=logger,
+    )
 
 
 def greet():
-    personality_runtime.greet(speak=speak, send_log=send_log, logger=logger)
+    personality_runtime.greet(
+        speak=speak,
+        send_log=send_log,
+        logger=logger,
+    )
 
 
 def start_jarvis():
@@ -74,16 +101,16 @@ def start_jarvis():
     print(
         """
 ╔═══════════════════════════════════════════════╗
-║            JARVIS  Starting...               ║
+║             FRIDAY  Starting...              ║
 ╚═══════════════════════════════════════════════╝
         """
     )
 
-    logger.info("JARVIS startup sequence initiated.")
+    logger.info("FRIDAY startup sequence initiated.")
 
     record_runtime_event(
         "startup",
-        "JARVIS startup sequence initiated",
+        "FRIDAY startup sequence initiated",
         "info",
         {"offline_stt": recognition_mode()},
     )
@@ -121,7 +148,7 @@ def start_jarvis():
         # ---------------------------------------------------------
         # ACTIVE CONVERSATION MODE
         # ---------------------------------------------------------
-        logger.info("JARVIS active conversation mode started.")
+        logger.info("FRIDAY active conversation mode started.")
         print("🟢 Active mode — you can speak normally.")
 
         last_activity = time.time()
@@ -131,11 +158,14 @@ def start_jarvis():
             # Check whether the user has been silent for too long.
             if time.time() - last_activity >= voice_runtime.ACTIVE_TIMEOUT:
                 wake_state.active = False
+
                 logger.info("Active conversation timed out.")
+
                 print(
                     f'💤 Returned to standby — say "{voice_runtime.WAKE_WORD}" '
                     "to activate..."
                 )
+
                 break
 
             # Listen for the next command.
@@ -173,7 +203,7 @@ def start_jarvis():
             # IMPORTANT:
             # DO NOT SET wake_state.active = False HERE.
             #
-            # This keeps JARVIS listening for the next command.
+            # This keeps FRIDAY listening for the next command.
             # -----------------------------------------------------
 
             print("🎤 Listening for your next command...")
@@ -184,4 +214,4 @@ def start_jarvis():
         if not running:
             break
 
-    logger.info("JARVIS voice loop stopped.")
+    logger.info("FRIDAY voice loop stopped.")

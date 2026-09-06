@@ -1,6 +1,6 @@
 """
 VOICE ENGINE - Microsoft Edge TTS
-Manages JARVIS speech output.
+Manages Friday speech output.
 """
 
 import asyncio
@@ -19,7 +19,7 @@ except pygame.error as exc:
     MIXER_READY = False
     send_log(f"[WARN] TTS audio mixer unavailable. Voice output disabled: {exc}")
 
-VOICE = "en-GB-RyanNeural"  # Closest to Iron Man JARVIS voice
+VOICE = "en-GB-RyanNeural"  # Closest to Iron Man Friday voice
 RATE = "-8%"
 PITCH = "-12Hz"
 
@@ -44,7 +44,7 @@ async def _speak_async(text: str):
 def speak(text: str):
     send_state("SPEAKING", "Voice response active")
     send_log(f"[SPEAKING] Speaking started: {text[:120]}")
-    print(f"JARVIS: {text}")
+    print(f"Friday: {text}")
     try:
         asyncio.run(_speak_async(text))
     except (EdgeTTSException, OSError, RuntimeError, pygame.error) as exc:
@@ -55,4 +55,4 @@ def speak(text: str):
 
 # Keep Turkish alias for backward compatibility
 if __name__ == "__main__":
-    speak("All systems online. Jarvis is ready, sir.")
+    speak("All systems online. Friday is ready, sir.")
